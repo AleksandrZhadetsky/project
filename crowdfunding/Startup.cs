@@ -70,6 +70,8 @@ namespace crowdfunding
             app.UseAuthentication();
             app.UseAuthorization();
 
+            UsersDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

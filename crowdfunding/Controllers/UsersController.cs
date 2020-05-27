@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using crowdfunding.Data;
 using crowdfunding.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -12,8 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace crowdfunding.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    public class AdminController : Controller
+    public class UsersController : Controller
     {
         private UserManager<User> _userManager;
         private IUserValidator<User> _userValidator;
@@ -21,7 +20,7 @@ namespace crowdfunding.Controllers
         private IPasswordHasher<User> _passwordHasher;
         private IWebHostEnvironment _hostingEnvironment;
 
-        public AdminController(
+        public UsersController(
         UserManager<User> userManager,
         IUserValidator<User> userValidator,
         IPasswordValidator<User> passwordValidator,
@@ -37,19 +36,27 @@ namespace crowdfunding.Controllers
 
         public IActionResult Index() => View(_userManager.Users.ToList());
 
-        public async Task<IActionResult> DeleteUsers(string[] selected)
+        public async Task<IActionResult> GetUser(string id)
         {
-            var users = _userManager.Users.Where(user => selected.Contains(user.Id)).ToList();
-            if (users.Count > 0)
+            var user = await _userManager.FindByIdAsync(id);
+            if (user != null)
             {
-                foreach (var item in users)
-                {
-                    IdentityResult result = await _userManager.DeleteAsync(item);
-                    if (!result.Succeeded)
-                    {
-                        AddErrorsFromResult(result);
-                    }
-                }
+                return View(user);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            IdentityResult result = await _userManager.DeleteAsync(user);
+
+            if (!result.Succeeded)
+            {
+                AddErrorsFromResult(result);
             }
             else
             {

@@ -52,11 +52,16 @@
                 <th>
                     Username
                 </th>
+                <th>
+                    Photo
+                </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
+                string photoPath = ((!string.IsNullOrEmpty(item.PhotoPath)) ? ("~/uploads/" + item.PhotoPath) : "~/uploads/" + "noimage.png");
                 <tr>
                     <td>
                         <input type="checkbox" name="selected" id="@item.Id" value="@item.Id">
@@ -69,6 +74,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.UserName)
+                    </td>                    
+                    <td >
+                        <img class="img-thumbnail" src="@photoPath" alt="photo" asp-append-version="true"/>
                     </td>
                     <td>
                         <input type="hidden" name="userId" value="@item.Id" />

@@ -1,14 +1,17 @@
 ﻿using crowdfunding.Data;
 using crowdfunding.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace crowdfunding.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -29,12 +32,14 @@ namespace crowdfunding.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterModel model)
         {
@@ -44,8 +49,8 @@ namespace crowdfunding.Controllers
 
                 if (model.Photo != null)
                 {
-                    var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "images");
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                    var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName.Split("\\").Last();
                     var filePath = Path.Combine(uploads, uniqueFileName);
                     await model.Photo.CopyToAsync(new FileStream(filePath, FileMode.Create));  // complete this soon
                 }
@@ -71,12 +76,14 @@ namespace crowdfunding.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Authenticate(string returnUrl = null)
         {
             return View("Login");
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Authenticate(LoginModel model)
