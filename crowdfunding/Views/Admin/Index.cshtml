@@ -1,0 +1,81 @@
+﻿@model List<User>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>User Accounts</h1>
+@section scripts
+{
+    <script type="text/javascript">
+
+        $('#checkAll').click(function () {
+            var checked = $(this).is(':checked');
+            var cnt = $('input[type=checkbox]', "#myTable").length;
+            $('input[type=checkbox]', "#myTable").each(function () {
+                if (checked) {
+                    $(this).attr('checked', 'checked');
+                }
+                else {
+                    $(this).removeAttr('checked');
+                }
+            });
+        });
+
+    </script>
+}
+
+<form>
+    @{
+        if (Model.Count > 0)
+        {
+            <div class="nav navbar-dark">
+                <button type="submit" asp-controller="Admin" asp-action="DeleteUsers" formmethod="post" class="btn btn-outline-danger">Delete</button>
+                @*<button type="submit" asp-controller="Admin" asp-action="RemoveUsersFromRole" formmethod="post" class="btn btn-outline-warning">Remove from role</button>*@
+            </div>
+        }
+    }
+    <table class="table" id='myTable'>
+        <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" id="checkAll" name="checkAll" value="" />
+                </th>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Username
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" name="selected" id="@item.Id" value="@item.Id">
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        <input type="hidden" name="userId" value="@item.Id" />
+                        <button type="submit" asp-controller="Admin" asp-action="Edit" formmethod="get" class="btn btn-outline-success">Edit</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>

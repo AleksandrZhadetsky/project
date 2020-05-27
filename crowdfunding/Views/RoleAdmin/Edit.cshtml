@@ -1,0 +1,70 @@
+﻿@model crowdfunding.Models.RoleEditModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit @Model.Role.Name Role</h1>
+
+<form method="post">
+
+    <input type="hidden" name="roleName" value="@Model.Role.Name" />
+    <input type="hidden" name="roleId" value="@Model.Role.Id" />
+
+    <h6>
+        Add to @Model.Role.Name
+    </h6>
+    <table class="table">
+        @if (Model.NonMembers.Count() == 0)
+        {
+            <tr><td colspan="2">All Users Are Members</td></tr>
+        }
+        else
+        {
+            @foreach (var item in Model.NonMembers)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        <input type="checkbox" name="idsToAdd" value="@item.Id">
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+    <h6>
+        Remove from @Model.Role.Name
+    </h6>
+    <table class="table">
+        @if (Model.Members.Count() == 0)
+        {
+            <tr><td colspan="2">No Users Are Members</td></tr>
+        }
+        else
+        {
+            @foreach (var item in Model.Members)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        <input type="checkbox" name="idsToDelete" value="@item.Id">
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+    <button type="submit" class="btn btn-success" asp-controller="RoleAdmin" asp-action="Edit">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
