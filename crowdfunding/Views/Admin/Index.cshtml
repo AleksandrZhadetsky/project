@@ -32,8 +32,7 @@
         if (Model.Count > 0)
         {
             <div class="nav navbar-dark">
-                <button type="submit" asp-controller="Admin" asp-action="DeleteUsers" formmethod="post" class="btn btn-outline-danger">Delete</button>
-                @*<button type="submit" asp-controller="Admin" asp-action="RemoveUsersFromRole" formmethod="post" class="btn btn-outline-warning">Remove from role</button>*@
+                <button type="submit" asp-action="DeleteUsers" formmethod="post" class="btn btn-outline-danger">Delete</button>
             </div>
         }
     }
@@ -74,13 +73,12 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.UserName)
-                    </td>                    
-                    <td >
-                        <img class="img-thumbnail" src="@photoPath" alt="photo" asp-append-version="true"/>
                     </td>
                     <td>
-                        <input type="hidden" name="userId" value="@item.Id" />
-                        <button type="submit" asp-controller="Admin" asp-action="Edit" formmethod="get" class="btn btn-outline-success">Edit</button>
+                        <img class="img-thumbnail" src="@photoPath" alt="photo" asp-append-version="true" />
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "Admin", new { id = item.Id })
                     </td>
                 </tr>
             }

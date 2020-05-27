@@ -16,6 +16,7 @@
             <th>
                 Name
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -32,14 +33,17 @@
                     <form method="get">
                         <input type="hidden" name="id" value="@item.Id" />
                         <button class="btn btn-outline-info" type="submit" asp-controller="RoleAdmin" asp-action="Edit">Edit</button>
-                    </form> |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </form>
+                    <form method="delete">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button class="btn btn-outline-warning" type="submit" asp-controller="RoleAdmin" asp-action="Delete">Delete</button>
+                    </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+<form method="get">
+    <button class="btn btn-outline-info" type="submit" asp-controller="RoleAdmin" asp-action="Create">Create</button>
+</form>

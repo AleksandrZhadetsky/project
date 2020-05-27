@@ -35,8 +35,10 @@ namespace crowdfunding.Controllers
             _hostingEnvironment = webHostEnvironment;
         }
 
+        [HttpGet]
         public IActionResult Index() => View(_userManager.Users.ToList());
 
+        [HttpPost]
         public async Task<IActionResult> DeleteUsers(string[] selected)
         {
             var users = _userManager.Users.Where(user => selected.Contains(user.Id)).ToList();
@@ -66,9 +68,9 @@ namespace crowdfunding.Controllers
             }
         }
 
-        public async Task<IActionResult> Edit(string userId)
+        public async Task<IActionResult> Edit(string id)
         {
-            User user = await _userManager.FindByIdAsync(userId);
+            User user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
                 UserModel model = new UserModel { Id = user.Id, Email = user.Email, UserName = user.UserName };

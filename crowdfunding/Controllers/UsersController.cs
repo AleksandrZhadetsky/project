@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using crowdfunding.Data;
 using crowdfunding.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace crowdfunding.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private UserManager<User> _userManager;
@@ -34,14 +36,13 @@ namespace crowdfunding.Controllers
             _hostingEnvironment = webHostEnvironment;
         }
 
-        public IActionResult Index() => View(_userManager.Users.ToList());
-
-        public async Task<IActionResult> GetUser(string id)
+        [HttpGet]
+        public async Task<IActionResult> GetUser()
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
             if (user != null)
             {
-                return View(user);
+                return View("Details", user);
             }
             else
             {
@@ -49,6 +50,7 @@ namespace crowdfunding.Controllers
             }
         }
 
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -73,9 +75,10 @@ namespace crowdfunding.Controllers
             }
         }
 
-        public async Task<IActionResult> Edit(string userId)
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
         {
-            User user = await _userManager.FindByIdAsync(userId);
+            User user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
                 UserModel model = new UserModel { Id = user.Id, Email = user.Email, UserName = user.UserName };
@@ -87,7 +90,7 @@ namespace crowdfunding.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Edit(string id, string email, string userName, IFormFile photo, string oldPassword, string newPassword)
         {
             User user = await _userManager.FindByIdAsync(id);

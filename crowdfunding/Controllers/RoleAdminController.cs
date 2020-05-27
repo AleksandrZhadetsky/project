@@ -21,8 +21,10 @@ namespace crowdfunding.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
         public ViewResult Index() => View(_roleManager.Roles.ToList());
 
+        [HttpGet]
         public IActionResult Create() => View();
 
         [HttpPost]
@@ -45,7 +47,7 @@ namespace crowdfunding.Controllers
             return View(name);
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             IdentityRole role = await _roleManager.FindByIdAsync(id);
@@ -70,6 +72,7 @@ namespace crowdfunding.Controllers
             return View("Index", _roleManager.Roles);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
             IdentityRole role = await _roleManager.FindByIdAsync(id);
@@ -89,7 +92,7 @@ namespace crowdfunding.Controllers
             });
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Edit(RoleModificationModel model)
         {
             IdentityResult result;
