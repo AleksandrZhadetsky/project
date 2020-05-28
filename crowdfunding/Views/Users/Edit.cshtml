@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form enctype="multipart/form-data" method="put" asp-action="Edit">
+        <form enctype="multipart/form-data" method="post" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -42,8 +42,10 @@
                 <span asp-validation-for="NewPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">Save</button>
             </div>
+
+            @Html.ActionLink("Cancel", "GetUser", "Users", new { id = Model.Id })
         </form>
     </div>
 </div>

@@ -24,7 +24,7 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserName)
+            User Name
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.UserName)
@@ -34,6 +34,6 @@
 <div>
     <form method="get">
         <input type="hidden" name="id" value="@Model.Id" />
-        <button class="btn btn-outline-info" asp-controller="Users" asp-action="Edit" name="userId">Edit</button>
+        <button class="btn btn-outline-info" asp-controller="Users" asp-action="Edit">Edit</button>
     </form>
 </div>

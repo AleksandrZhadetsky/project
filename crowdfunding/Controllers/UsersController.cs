@@ -50,7 +50,7 @@ namespace crowdfunding.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -90,7 +90,7 @@ namespace crowdfunding.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Edit(string id, string email, string userName, IFormFile photo, string oldPassword, string newPassword)
         {
             User user = await _userManager.FindByIdAsync(id);
@@ -137,7 +137,7 @@ namespace crowdfunding.Controllers
                     IdentityResult result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index");
+                        return View("Details", user);
                     }
                     else
                     {
@@ -149,6 +149,7 @@ namespace crowdfunding.Controllers
             {
                 ModelState.AddModelError("", "User Not Found");
             }
+
             return View(user);
         }
     }

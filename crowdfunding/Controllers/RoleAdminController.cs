@@ -47,7 +47,7 @@ namespace crowdfunding.Controllers
             return View(name);
         }
 
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             IdentityRole role = await _roleManager.FindByIdAsync(id);
@@ -92,7 +92,7 @@ namespace crowdfunding.Controllers
             });
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Edit(RoleModificationModel model)
         {
             IdentityResult result;
